@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>System Unlocked</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .terminal {
+            background: #0c0c0c;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 35px 45px;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.15);
+            font-size: 1.3rem;
+            line-height: 1.9;
+        }
+        .prompt {
+            color: #555;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal">
+        <div><span class="prompt">$ </span>wget ~/gift/present.zip</div>
+        <div><span class="prompt">$ </span>cd /home/backpack</div>
+        <div><span class="prompt">$ </span>./run.sh --reuse-key</div>
+    </div>
+
+</body>
+</html>
