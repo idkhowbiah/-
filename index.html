@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incoming Transmission...</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #000000;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .hidden-payload {
+            margin-top: 25vh;
+            font-size: 1.4rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+        /* При выделении текст становится ярко-зелёным на тёмном фоне */
+        ::selection {
+            background: #00ff41;
+            color: #000000;
+        }
+        .hint {
+            color: #141414; /* Едва заметный тёмно-серый */
+            font-size: 0.85rem;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hidden-payload">
+        [ВХОДЯЩЕЕ СООБЩЕНИЕ]<br>
+        Доступ к поздравлению и подарку заблокирован протоколом безопасности.<br>
+        Пройди все 7 рубежей защиты.<br><br>
+        Точка перехода на 2 уровень: ./stage2-x8q.html
+    </div>
+
+    <div class="hint">Sometimes the answer is right in front of you.</div>
+
+</body>
+</html>
