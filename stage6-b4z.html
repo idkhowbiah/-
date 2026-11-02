@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stage 6 — System Login</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            border: 1px solid #00ff00;
+            padding: 30px;
+            width: 380px;
+            background-color: #050505;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.15);
+        }
+        h3 {
+            margin-top: 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px 0;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #00ff00;
+            color: #00;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        .debug {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #666;
+            word-break: break-all;
+            border-top: 1px dashed #333;
+            padding-top: 10px;
+        }
+        .error {
+            color: #ff3333;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            text-align: center;
+            min-height: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <h3>RESTRICTED AREA</h3>
+        <form id="sqlForm">
+            <label>USERNAME:</label>
+            <input type="text" id="username" placeholder="admin" autocomplete="off">
+            <label>PASSWORD:</label>
+            <input type="text" id="password" placeholder="••••••••" autocomplete="off">
+            <button type="submit">AUTHENTICATE</button>
+        </form>
+        <div id="errorMsg" class="error"></div>
+        <div class="debug" id="queryPreview">
+            SQL Debug: SELECT * FROM users WHERE user='' AND pass=''
+        </div>
+    </div>
+
+    <script>
+        const userInp = document.getElementById('username');
+        const passInp = document.getElementById('password');
+        const preview = document.getElementById('queryPreview');
+        const errorMsg = document.getElementById('errorMsg');
+
+        function updatePreview() {
+            preview.textContent = `SQL Debug: SELECT * FROM users WHERE user='${userInp.value}' AND pass='${passInp.value}'`;
+        }
+
+        userInp.addEventListener('input', updatePreview);
+        passInp.addEventListener('input', updatePreview);
+
+        document.getElementById('sqlForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const raw = (userInp.value + " " + passInp.value).toLowerCase();
+            const normalized = raw.replace(/\s+/g, '');
+
+            const isSqlInjection = 
+                normalized.includes("'or'1'='1") ||
+                normalized.includes("'or1=1") ||
+                normalized.includes("\"or\"1\"=\"1") ||
+                normalized.includes("\"or1=1") ||
+                normalized.includes("or'a'='a") ||
+                normalized.includes("admin'--") ||
+                normalized.includes("admin'#");
+
+            if (isSqlInjection) {
+                window.location.href = atob("Li9zdGFnZTYtc2VjcmV0LTk5YS5odG1s");
+            } else {
+                errorMsg.textContent = "ACCESS DENIED: Invalid credentials.";
+            }
+        });
+    </script>
+
+</body>
+</html>
