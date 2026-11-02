@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stage 7 — Memories</title>
+    <style>
+        body {
+            background-color: #0f0f14;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        .bouncing-text {
+            font-size: 1.8rem;
+            color: #ff6b81;
+            margin-bottom: 40px;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-22px);
+            }
+        }
+        form {
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            background: #1e1e26;
+            border: 1px solid #ff6b81;
+            color: #fff;
+            border-radius: 4px;
+            font-family: inherit;
+            text-align: center;
+            width: 180px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            background: #ff6b81;
+            color: #0f0f14;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ff4757;
+        }
+        .error {
+            color: #ff4757;
+            margin-top: 15px;
+            min-height: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bouncing-text">Find me in the gallery of our memories</div>
+
+    <form id="osintForm">
+        <input type="text" id="code" placeholder="Enter code..." autocomplete="off">
+        <button type="submit">UNLOCK</button>
+    </form>
+    <div id="err" class="error"></div>
+
+    <script>
+        document.getElementById('osintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const val = document.getElementById('code').value.trim();
+            if (val === "143") {
+                window.location.href = atob("Li9maW5hbC1yZXdhcmQtMDB4Lmh0bWw=");
+            } else {
+                document.getElementById('err').textContent = "Incorrect key. Keep looking!";
+            }
+        });
+    </script>
+
+</body>
+</html>
