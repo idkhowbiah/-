@@ -13,15 +13,51 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
+            user-select: none;
+            cursor: pointer;
         }
         h2 {
             font-weight: normal;
+        }
+        .click-word {
+            position: absolute;
+            color: #888888;
+            font-size: 1rem;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            animation: fadeUp 1s ease-out forwards;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -120%) scale(1.1);
+            }
         }
     </style>
 </head>
 <body>
 
     <h2>Nothing to see here. Or is there?</h2>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            const word = document.createElement('span');
+            word.className = 'click-word';
+            word.textContent = 'nothing';
+            word.style.left = e.clientX + 'px';
+            word.style.top = e.clientY + 'px';
+            document.body.appendChild(word);
+
+            setTimeout(() => {
+                word.remove();
+            }, 1000);
+        });
+    </script>
 
     <!-- 
         ========================================================
