@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stage 5 — Camera Roll</title>
+    <title>Stage 5 — Cloud Gallery</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,114 +11,183 @@
             padding: 0;
         }
         body {
-            background-color: #070709;
-            color: #ffffff;
+            background-color: #090a0f;
+            color: #e4e4e7;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 25px;
             user-select: none;
         }
 
-        /* Корпус смартфона */
-        .phone-mockup {
-            width: 350px;
-            height: 670px;
-            background: #000000;
-            border-radius: 46px;
-            border: 10px solid #1e1e24;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px #333;
-            position: relative;
-            overflow: hidden;
+        /* Широкое окно браузера */
+        .browser-window {
+            width: 100%;
+            max-width: 1150px;
+            height: 86vh;
+            background: #12131a;
+            border-radius: 14px;
+            border: 1px solid #27272a;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Вырез Dynamic Island сверху */
-        .notch {
-            width: 105px;
-            height: 24px;
-            background: #09090b;
-            border-radius: 20px;
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 30;
-            border: 1px solid #18181b;
-        }
-
-        /* Статус-бар телефона */
-        .status-bar {
-            height: 44px;
+        /* Панель вкладок браузера */
+        .browser-tabs {
+            background: #0c0d12;
+            padding: 10px 18px 0;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 8px 24px 0 24px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #fff;
-            z-index: 20;
+            gap: 16px;
+        }
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            padding-bottom: 10px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        .tab {
+            background: #181922;
+            color: #e4e4e7;
+            padding: 9px 22px;
+            border-radius: 10px 10px 0 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #27272a;
+            border-bottom: none;
+        }
+        .tab-close {
+            color: #71717a;
+            font-size: 0.9rem;
         }
 
-        /* Шапка галереи */
-        .app-header {
-            padding: 8px 18px 12px;
+        /* Панель с кнопками и поисковой строкой */
+        .browser-toolbar {
+            background: #181922;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid #27272a;
+        }
+        .nav-icons {
+            display: flex;
+            gap: 12px;
+            color: #71717a;
+            font-size: 1.05rem;
+        }
+
+        /* Поисковая строка с подсказкой */
+        .search-bar {
+            flex: 1;
+            background: #0c0d12;
+            border: 1px solid #2e303e;
+            border-radius: 24px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .search-icon {
+            color: #00ff41;
+            font-size: 0.95rem;
+        }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.05rem;
+            width: 100%;
+            outline: none;
+            letter-spacing: 0.5px;
+        }
+
+        /* Шапка внутри страницы */
+        .gallery-header {
+            padding: 20px 30px 10px;
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            border-bottom: 1px solid #1c1c1e;
         }
-        .app-header h2 {
-            font-size: 1.45rem;
-            font-weight: 700;
+        .gallery-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
         }
-        .app-header span {
-            font-size: 0.8rem;
-            color: #8e8e93;
+        .gallery-header span {
+            font-size: 0.9rem;
+            color: #71717a;
         }
 
-        /* Сетка миниатюр */
+        /* Крупная сетка фотографий */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            padding: 2px;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 16px;
+            padding: 15px 30px 30px;
             overflow-y: auto;
             flex: 1;
-            align-content: start;
         }
         .gallery-grid::-webkit-scrollbar {
-            display: none;
+            width: 8px;
+        }
+        .gallery-grid::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
         }
         .grid-item {
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 4 / 3;
+            border-radius: 10px;
             overflow: hidden;
             cursor: pointer;
-            background: #1c1c1e;
+            background: #1c1d26;
+            border: 1px solid #27272a;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .grid-item:hover {
+            transform: translateY(-4px);
+            border-color: #0a84ff;
         }
         .grid-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s ease;
         }
         .grid-item:hover img {
             transform: scale(1.06);
         }
 
-        /* Режим полноэкранного перелистывания фото */
+        /* Режим полноэкранного перелистывания поверх вкладки */
         .viewer {
             position: absolute;
-            inset: 0;
-            background: #000000;
-            z-index: 25;
+            top: 97px; /* Ровно под поисковой строкой браузера */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 11, 16, 0.96);
+            backdrop-filter: blur(14px);
+            z-index: 20;
             display: none;
             flex-direction: column;
-            padding-top: 44px;
         }
         .viewer.active {
             display: flex;
@@ -127,39 +196,43 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 16px;
-            background: rgba(15, 15, 18, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #1c1c1e;
+            padding: 14px 30px;
+            border-bottom: 1px solid #27272a;
+            background: #14151e;
         }
         .back-btn {
-            background: none;
+            background: #27272a;
             border: none;
-            color: #0a84ff;
-            font-size: 0.95rem;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
         }
+        .back-btn:hover {
+            background: #3f3f46;
+        }
         .photo-counter {
-            font-size: 0.85rem;
-            color: #ebebf5;
+            font-size: 0.95rem;
+            color: #a1a1aa;
             font-weight: 600;
         }
         .download-btn {
-            color: #0a84ff;
+            background: #0a84ff;
+            color: #ffffff;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            border: 1px solid rgba(10, 132, 255, 0.4);
-            padding: 4px 10px;
-            border-radius: 14px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background 0.2s;
         }
         .download-btn:hover {
-            background: #0a84ff;
-            color: #fff;
+            background: #0070e0;
         }
 
-        /* Горизонтальная карусель слайдов */
+        /* Карусель крупных фото */
         .slides-track {
             flex: 1;
             display: flex;
@@ -178,120 +251,114 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px;
+            padding: 25px;
         }
         .slide img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
         }
 
-        /* Нижняя панель навигации внутри просмотра */
+        /* Нижние кнопки перелистывания */
         .viewer-bottom {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 14px 28px 26px;
-            background: rgba(15, 15, 18, 0.85);
-            border-top: 1px solid #1c1c1e;
+            gap: 30px;
+            padding: 16px;
+            border-top: 1px solid #27272a;
+            background: #14151e;
         }
         .nav-arrow {
-            background: #1c1c1e;
+            background: #27272a;
             color: #ffffff;
             border: none;
-            width: 38px;
-            height: 38px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
         }
         .nav-arrow:hover {
-            background: #2c2c2e;
+            background: #0a84ff;
+            transform: scale(1.05);
         }
         .swipe-tip {
-            font-size: 0.75rem;
-            color: #636366;
-        }
-
-        /* Нижняя полоска iOS Home Indicator */
-        .home-bar {
-            width: 120px;
-            height: 4px;
-            background: #ffffff;
-            border-radius: 4px;
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0.5;
-            z-index: 30;
-        }
-
-        /* Подсказка под телефоном */
-        .hint {
-            margin-top: 22px;
-            color: #00ff41;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.05rem;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 8px rgba(0, 255, 65, 0.35);
+            font-size: 0.85rem;
+            color: #71717a;
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-mockup">
-        <div class="notch"></div>
-
-        <div class="status-bar">
-            <span>09:41</span>
-            <span>5G 100%</span>
+    <div class="browser-window">
+        <!-- Вкладки браузера -->
+        <div class="browser-tabs">
+            <div class="window-controls">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </div>
+            <div class="tab">
+                <span>&#128193; Cloud Gallery — 12 Items</span>
+                <span class="tab-close">&times;</span>
+            </div>
         </div>
 
-        <div class="app-header">
-            <h2>Recents</h2>
-            <span>12 Photos</span>
+        <!-- Панель с поисковой строкой -->
+        <div class="browser-toolbar">
+            <div class="nav-icons">
+                <span>&#8592;</span>
+                <span>&#8594;</span>
+                <span>&#8635;</span>
+            </div>
+            <div class="search-bar">
+                <span class="search-icon">&#128269;</span>
+                <input type="text" class="search-input" value="Look deeper than pixels..." readonly>
+            </div>
         </div>
 
-        <!-- Сетка всех фото -->
+        <!-- Заголовок и сетка крупных фотографий -->
+        <div class="gallery-header">
+            <h2>All Photos</h2>
+            <span>12 files uploaded</span>
+        </div>
+
         <div class="gallery-grid" id="grid"></div>
 
-        <!-- Полноэкранный просмотр с перелистыванием -->
+        <!-- Полноэкранный режим перелистывания внутри браузера -->
         <div class="viewer" id="viewer">
             <div class="viewer-top">
-                <button class="back-btn" id="closeBtn">&#10094; Albums</button>
-                <span class="photo-counter" id="counter">1 of 12</span>
-                <a href="#" id="downloadBtn" class="download-btn" download>Download</a>
+                <button class="back-btn" id="closeBtn">&#10094; Back to Grid</button>
+                <span class="photo-counter" id="counter">1 / 12</span>
+                <a href="#" id="downloadBtn" class="download-btn" download>Download Image</a>
             </div>
             <div class="slides-track" id="track"></div>
             <div class="viewer-bottom">
                 <button class="nav-arrow" id="prevBtn">&#8592;</button>
-                <span class="swipe-tip">Swipe or use arrows</span>
+                <span class="swipe-tip">Use arrows or keyboard &#8592; &#8594; to flip through photos</span>
                 <button class="nav-arrow" id="nextBtn">&#8594;</button>
             </div>
         </div>
-
-        <div class="home-bar"></div>
     </div>
 
-    <p class="hint">Look deeper than pixels.</p>
-
     <script>
-        // 12 фотографий: обычные кадры из жизни и тукс в маске на 7-м месте (посередине)
         const photos = [
-            { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80", name: "IMG_1041.jpg" },
-            { src: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80", name: "IMG_1042.jpg" },
-            { src: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&q=80", name: "IMG_1043.jpg" },
-            { src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80", name: "IMG_1044.jpg" },
-            { src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80", name: "IMG_1045.jpg" },
-            { src: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=600&q=80", name: "IMG_1046.jpg" },
-            { src: "tux_anon.png", name: "tux_anon.png" }, // 7-е фото в середине галереи
-            { src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80", name: "IMG_1048.jpg" },
-            { src: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80", name: "IMG_1049.jpg" },
-            { src: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=600&q=80", name: "IMG_1050.jpg" },
-            { src: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80", name: "IMG_1051.jpg" },
-            { src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80", name: "IMG_1052.jpg" }
+            { src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&q=80", name: "IMG_1041.jpg" },
+            { src: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=900&q=80", name: "IMG_1042.jpg" },
+            { src: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=900&q=80", name: "IMG_1043.jpg" },
+            { src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=900&q=80", name: "IMG_1044.jpg" },
+            { src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80", name: "IMG_1045.jpg" },
+            { src: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=900&q=80", name: "IMG_1046.jpg" },
+            { src: "tux_anon.png", name: "tux_anon.png" }, // 7-е фото в середине
+            { src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=80", name: "IMG_1048.jpg" },
+            { src: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=900&q=80", name: "IMG_1049.jpg" },
+            { src: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=900&q=80", name: "IMG_1050.jpg" },
+            { src: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80", name: "IMG_1051.jpg" },
+            { src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=900&q=80", name: "IMG_1052.jpg" }
         ];
 
         const grid = document.getElementById('grid');
@@ -302,14 +369,12 @@
         let currentIndex = 0;
 
         photos.forEach((photo, index) => {
-            // Добавляем миниатюру в сетку
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.innerHTML = `<img src="${photo.src}" alt="Photo">`;
             item.addEventListener('click', () => openViewer(index));
             grid.appendChild(item);
 
-            // Добавляем слайд в карусель
             const slide = document.createElement('div');
             slide.className = 'slide';
             slide.innerHTML = `<img src="${photo.src}" alt="Slide">`;
@@ -318,7 +383,7 @@
 
         function updateHeader(index) {
             currentIndex = index;
-            counter.textContent = `${index + 1} of ${photos.length}`;
+            counter.textContent = `${index + 1} / ${photos.length}`;
             downloadBtn.href = photos[index].src;
             downloadBtn.setAttribute('download', photos[index].name);
         }
@@ -333,16 +398,27 @@
             viewer.classList.remove('active');
         });
 
-        document.getElementById('prevBtn').addEventListener('click', () => {
+        function goPrev() {
             if (currentIndex > 0) {
                 track.scrollTo({ left: track.clientWidth * (currentIndex - 1), behavior: 'smooth' });
             }
-        });
+        }
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
+        function goNext() {
             if (currentIndex < photos.length - 1) {
                 track.scrollTo({ left: track.clientWidth * (currentIndex + 1), behavior: 'smooth' });
             }
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', goPrev);
+        document.getElementById('nextBtn').addEventListener('click', goNext);
+
+        // Перелистывание клавишами стрелок на клавиатуре
+        document.addEventListener('keydown', (e) => {
+            if (!viewer.classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') goPrev();
+            if (e.key === 'ArrowRight') goNext();
+            if (e.key === 'Escape') viewer.classList.remove('active');
         });
 
         track.addEventListener('scroll', () => {
