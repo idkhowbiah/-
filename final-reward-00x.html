@@ -232,7 +232,6 @@
             font-size: 1.04rem;
             line-height: 1.68;
             color: #f1f5f9;
-            margin-bottom: 24px;
             box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
         }
         .love-letter p {
@@ -258,32 +257,7 @@
             text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
         }
 
-        /* Терминал с командами для подарка */
-        .terminal-box {
-            background: #05060a;
-            border: 1px solid rgba(0, 255, 65, 0.45);
-            border-radius: 10px;
-            padding: 18px 24px;
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.12);
-            font-size: 1.1rem;
-            line-height: 1.85;
-            color: #00ff41;
-            position: relative;
-        }
-        .terminal-title {
-            font-size: 0.72rem;
-            color: #64748b;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .prompt {
-            color: #ff477e;
-            user-select: none;
-            font-weight: bold;
-        }
-
-        /* Нижняя панель с бегающим туда-сюда пингвином Туксом */
+        /* Нижняя панель с бегающим пиксельным пингвином Туксом */
         .tux-runway {
             position: fixed;
             bottom: 0;
@@ -300,53 +274,36 @@
             position: absolute;
             bottom: 6px;
             left: 0;
-            width: 60px;
-            height: 60px;
-            animation: patrolX 11s linear infinite;
+            width: 54px;
+            height: 54px;
+            animation: patrolX 12s linear infinite;
         }
-        .tux-sprite {
+        .pixel-tux {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75));
-            animation: waddleHop 0.32s ease-in-out infinite alternate;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
+            animation: waddleHop 0.3s ease-in-out infinite alternate;
         }
 
-        /* Движение пингвина от левого края к правому и обратно с разворотом */
+        /* Движение Тукса от края до края с разворотом */
         @keyframes patrolX {
-            0% {
-                left: 2%;
-                transform: scaleX(1);
-            }
-            48% {
-                left: calc(98% - 60px);
-                transform: scaleX(1);
-            }
-            50% {
-                left: calc(98% - 60px);
-                transform: scaleX(-1);
-            }
-            98% {
-                left: 2%;
-                transform: scaleX(-1);
-            }
-            100% {
-                left: 2%;
-                transform: scaleX(1);
-            }
+            0% { left: 2%; transform: scaleX(1); }
+            48% { left: calc(98% - 54px); transform: scaleX(1); }
+            50% { left: calc(98% - 54px); transform: scaleX(-1); }
+            98% { left: 2%; transform: scaleX(-1); }
+            100% { left: 2%; transform: scaleX(1); }
         }
 
-        /* Веселое подпрыгивание при беге */
         @keyframes waddleHop {
-            0% { transform: translateY(0) rotate(-6deg); }
-            100% { transform: translateY(-9px) rotate(6deg); }
+            0% { transform: translateY(0) rotate(-4deg); }
+            100% { transform: translateY(-7px) rotate(4deg); }
         }
 
         @media (max-width: 600px) {
             .cyber-card { padding: 26px 20px; }
             .glitch-title { font-size: 1.3rem; }
             .love-letter { padding: 18px; font-size: 0.95rem; }
-            .terminal-box { font-size: 0.95rem; padding: 14px 16px; }
         }
     </style>
 </head>
@@ -355,7 +312,7 @@
     <!-- Бегущие киберпанк-ленты на заднем фоне -->
     <div class="ticker-background" id="tickerBg"></div>
 
-    <!-- Главная карточка с поздравлением и командами -->
+    <!-- Главная карточка с поздравлением -->
     <div class="cyber-card">
         <span class="corner c-tl"></span>
         <span class="corner c-tr"></span>
@@ -367,7 +324,7 @@
                 <span class="pulse-dot"></span>
                 <span>ALL 7 STAGES CLEARED // KEY: 143</span>
             </div>
-            <span>DECRYPTED_GIFT_FILE.SH</span>
+            <span>BIRTHDAY_ARCHIVE_UNLOCKED</span>
         </div>
 
         <h1 class="glitch-title" data-text="ACCESS GRANTED // HAPPY BIRTHDAY">ACCESS GRANTED // HAPPY BIRTHDAY</h1>
@@ -382,19 +339,27 @@
             <p>Я всегда буду любить тебя больше всего на свете, мой милый котик</p>
             <p class="ps-line">P.S. вводи тот же код и открывай подарки)</p>
         </div>
-
-        <div class="terminal-box">
-            <div class="terminal-title">// ROOT TERMINAL — GIFT EXECUTION COMMANDS:</div>
-            <div><span class="prompt">$ </span>wget ~/gift/present.zip</div>
-            <div><span class="prompt">$ </span>cd /home/backpack</div>
-            <div><span class="prompt">$ </span>./run.sh --reuse-key</div>
-        </div>
     </div>
 
-    <!-- Нижняя панель с бегающим пингвином Туксом -->
+    <!-- Нижняя панель с чистой пиксельной SVG-моделькой Тукса -->
     <div class="tux-runway">
         <div class="tux-runner">
-            <img src="tux_anon.png" alt="Tux" class="tux-sprite">
+            <svg class="pixel-tux" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <!-- Тело пингвина -->
+                <path d="M7 2h10v2h2v2h2v6h-2v4h-2v2h-2v2h-2v2H9v-2H7v-2H5v-2H3v-4H1V6h2V4h2V2h2z" fill="#1e222b"/>
+                <!-- Белое пузико -->
+                <path d="M9 8h6v2h2v4h-2v2H9v-2H7v-4h2V8z" fill="#ffffff"/>
+                <!-- Маска Анонима (белая основа) -->
+                <path d="M8 5h8v4H8V5z" fill="#ffffff"/>
+                <!-- Глаза / прорези маски -->
+                <path d="M9 6h2v2H9V6zm4 0h2v2h-2V6z" fill="#1e222b"/>
+                <!-- Усы и улыбка Гая Фокса -->
+                <path d="M10 9h4v1h-4V9zm1 1h2v1h-2v-1z" fill="#1e222b"/>
+                <!-- Оранжевый клюв -->
+                <path d="M11 7h2v2h-2V7z" fill="#ff9f0a"/>
+                <!-- Оранжевые лапки -->
+                <path d="M6 20h3v2H6v-2zm9 0h3v2h-3v-2z" fill="#ff9f0a"/>
+            </svg>
         </div>
     </div>
 
@@ -404,8 +369,7 @@
             "<i>[ROOT_ACCESS]</i> С ДНЁМ РОЖДЕНИЯ, ЛЮБИМЫЙ",
             "<b>[HEART_CORE]</b> 100_YEARS_TOGETHER_GRANTED",
             "<i>[SECURITY_OVERRIDE]</i> LOVE_LEVEL: INFINITE",
-            "<b>[GIFT_READY]</b> ./run.sh --reuse-key",
-            "<i>[VERIFIED]</i> ТЫ САМЫЙ СИЛЬНЫЙ И РОДНОЙ"
+            "<b>[VERIFIED]</b> ТЫ САМЫЙ СИЛЬНЫЙ И РОДНОЙ"
         ];
 
         const tickerBg = document.getElementById('tickerBg');
