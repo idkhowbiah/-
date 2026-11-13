@@ -6,8 +6,37 @@
     <link rel="stylesheet" href="style-v2w.css">
 </head>
 <body>
-    <div class="container">
+
+    <!-- Плавающие неоновые сферы для демонстрации магии CSS -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Карточка в виде окна CSS-инспектора -->
+    <div class="inspector-card">
+        <div class="window-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="window-title">inspector — styles.css</span>
+        </div>
+
+        <div class="code-preview">
+            <span class="selector">.secret-layer</span> {<br>
+            &nbsp;&nbsp;<span class="prop">display</span>: <span class="val">hidden</span>;<br>
+            &nbsp;&nbsp;<span class="prop">background</span>: <span class="val">linear-gradient(...)</span>;<br>
+            &nbsp;&nbsp;<span class="prop">content</span>: <span class="val">"Where are the styles stored?"</span>;<br>
+            }
+        </div>
+
+        <div class="swatches">
+            <div class="swatch c1"></div>
+            <div class="swatch c2"></div>
+            <div class="swatch c3"></div>
+            <div class="swatch c4"></div>
+        </div>
+
         <p class="hint">CS? Maybe...</p>
     </div>
+
 </body>
 </html>
