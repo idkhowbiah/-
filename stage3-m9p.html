@@ -5,8 +5,7 @@
     <title>Stage 3 — Decode</title>
     <style>
         body {
-            background-color: #0d1117;
-            color: #c9d1d9;
+            background-color: #000000;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
@@ -14,27 +13,95 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
+        }
+        /* Холст с падающими 0 и 1 на заднем плане */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Пропускает клики сквозь фон, чтобы не мешать выделять текст */
+        }
+        /* Блок с кодом и подсказкой поверх фона */
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.65); /* Легкое затемнение прямо под буквами для четкости */
+            padding: 25px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
         }
         .cipher {
-            background: #161b22;
-            padding: 20px 35px;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            font-size: 1.5rem;
-            color: #58a6ff;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41, 0 0 20px #008f11;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+            user-select: all; /* Удобное выделение всей строки одним кликом */
+        }
+        .cipher::selection {
+            background: #00ff41;
+            color: #000000;
         }
         .hint {
-            color: #8b949e;
-            font-size: 0.95rem;
+            color: #00cc33;
+            font-size: 1rem;
+            text-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
+            user-select: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="cipher">Li9zdGFnZTQtdjJ3Lmh0bWw=</div>
-    <div class="hint">Not 67, but 64.</div>
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="content">
+        <div class="cipher">Li9zdGFnZTQtdjJ3Lmh0bWw=</div>
+        <div class="hint">Not 67, but 64.</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = '01';
+        const fontSize = 18;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
+
+        function drawMatrix() {
+            // Полупрозрачный черный слой создает красивый шлейф за падающими цифрами
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#008f11'; // Чуть более темный зеленый для фона, чтобы код в центре выделялся
+            ctx.font = fontSize + 'px Courier New';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 45);
+    </script>
 
 </body>
 </html>
