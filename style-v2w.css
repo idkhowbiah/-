@@ -1,18 +1,150 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: #0b0d17;
+    /* Сетка дизайнера на фоне */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 35px 35px;
+    color: #e2e8f0;
     font-family: 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    overflow: hidden;
+    position: relative;
 }
 
+/* Анимированные неоновые пятна на заднем плане */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(75px);
+    z-index: 1;
+    animation: float 9s infinite ease-in-out alternate;
+}
+
+.orb-1 {
+    width: 320px;
+    height: 320px;
+    background: #ff007f;
+    top: 12%;
+    left: 20%;
+    opacity: 0.35;
+}
+
+.orb-2 {
+    width: 380px;
+    height: 380px;
+    background: #00d4ff;
+    bottom: 10%;
+    right: 18%;
+    opacity: 0.35;
+    animation-delay: -4.5s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(45px, -45px) scale(1.15); }
+}
+
+/* Полупрозрачная карточка с эффектом матового стекла */
+.inspector-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(19, 23, 38, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 28px 34px;
+    width: 440px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.inspector-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 212, 255, 0.45);
+}
+
+/* Шапка окна с тремя точками */
+.window-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.window-title {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* Блок с подсветкой синтаксиса CSS */
+.code-preview {
+    background: rgba(0, 0, 0, 0.45);
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 22px;
+    border-left: 3px solid #00d4ff;
+}
+
+.selector { color: #ff79c6; font-weight: bold; }
+.prop { color: #8be9fd; }
+.val { color: #f1fa8c; }
+
+/* Цветовая палитра */
+.swatches {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.swatch {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+}
+.c1 { background: #ff007f; box-shadow: 0 0 10px rgba(255, 0, 127, 0.5); }
+.c2 { background: #7928ca; box-shadow: 0 0 10px rgba(121, 40, 202, 0.5); }
+.c3 { background: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+.c4 { background: #00ff87; box-shadow: 0 0 10px rgba(0, 255, 135, 0.5); }
+
+/* Главная подсказка с переливающимся градиентом */
 .hint {
-    font-size: 1.4rem;
-    border-bottom: 1px dashed #555;
-    padding-bottom: 5px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff007f, #00d4ff, #00ff87);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
 }
 
 /* 
