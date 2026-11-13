@@ -1,41 +1,432 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>System Unlocked</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM UNLOCKED // HAPPY BIRTHDAY</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
-            background-color: #050505;
-            color: #00ff41;
+            background-color: #06060b;
+            background-image: 
+                radial-gradient(circle at 50% 35%, rgba(255, 42, 109, 0.14) 0%, transparent 65%),
+                radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+            color: #e2e8f0;
             font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 35px 15px 115px 15px; /* Отступ снизу для бегающего Тукса */
+            overflow-x: hidden;
+            position: relative;
         }
-        .terminal {
-            background: #0c0c0c;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 35px 45px;
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.15);
-            font-size: 1.3rem;
-            line-height: 1.9;
+
+        /* ЭЛТ-полосы киберпанк-монитора */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.25) 0px,
+                rgba(0, 0, 0, 0.25) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        /* Фоновые бегущие строки в стиле 7 уровня */
+        .ticker-background {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            pointer-events: none;
+            opacity: 0.22;
+        }
+        .ticker-row {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            border-top: 1px dashed rgba(0, 240, 255, 0.18);
+            border-bottom: 1px dashed rgba(255, 71, 126, 0.18);
+            padding: 8px 0;
+            background: rgba(10, 10, 18, 0.4);
+        }
+        .ticker-track {
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .scroll-left { animation: marqueeLeft 45s linear infinite; }
+        .scroll-right { animation: marqueeRight 50s linear infinite; }
+
+        @keyframes marqueeLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes marqueeRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+        .bg-item {
+            display: inline-block;
+            margin: 0 25px;
+            font-size: 1rem;
+            color: #94a3b8;
+            letter-spacing: 2px;
+        }
+        .bg-item b { color: #ff477e; }
+        .bg-item i { color: #00f0ff; font-style: normal; }
+
+        /* Центральная киберпанк-карточка */
+        .cyber-card {
+            position: relative;
+            z-index: 5;
+            background: rgba(12, 13, 22, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 71, 126, 0.45);
+            border-radius: 18px;
+            padding: 38px 44px;
+            max-width: 780px;
+            width: 100%;
+            box-shadow: 
+                0 25px 70px rgba(0, 0, 0, 0.95),
+                0 0 40px rgba(255, 71, 126, 0.18),
+                inset 0 0 25px rgba(0, 240, 255, 0.05);
+            overflow: hidden;
+        }
+
+        /* Сканирующий лазерный луч */
+        .cyber-card::before {
+            content: "";
+            position: absolute;
+            top: -40%;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.1), rgba(255, 71, 126, 0.16), transparent);
+            animation: scanline 6s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { top: -20%; }
+            100% { top: 110%; }
+        }
+
+        /* Неоновые уголки */
+        .corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-color: #00f0ff;
+            border-style: solid;
+            opacity: 0.85;
+        }
+        .c-tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+        .c-tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+        .c-bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+        .c-br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+        /* Верхняя строка статуса */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff41;
+            font-weight: bold;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ff41;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff41;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.4; }
+        }
+
+        /* Заголовок с RGB-глитчем */
+        .glitch-title {
+            position: relative;
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-transform: uppercase;
+            margin-bottom: 26px;
+            text-shadow: 0 0 15px rgba(255, 71, 126, 0.7);
+        }
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch-title::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff0055;
+            animation: glitch-1 2.2s infinite linear alternate-reverse;
+        }
+        .glitch-title::after {
+            left: -2px;
+            text-shadow: 2px 0 #00f0ff;
+            animation: glitch-2 1.8s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-1 {
+            0% { clip-path: inset(15% 0 70% 0); }
+            25% { clip-path: inset(65% 0 10% 0); }
+            50% { clip-path: inset(30% 0 45% 0); }
+            75% { clip-path: inset(80% 0 5% 0); }
+            100% { clip-path: inset(10% 0 60% 0); }
+        }
+        @keyframes glitch-2 {
+            0% { clip-path: inset(75% 0 10% 0); }
+            25% { clip-path: inset(10% 0 65% 0); }
+            50% { clip-path: inset(50% 0 25% 0); }
+            75% { clip-path: inset(5% 0 80% 0); }
+            100% { clip-path: inset(35% 0 40% 0); }
+        }
+
+        /* Блок с текстом поздравления */
+        .love-letter {
+            background: rgba(6, 7, 14, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 3px solid #ff477e;
+            border-radius: 10px;
+            padding: 24px 28px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 1.04rem;
+            line-height: 1.68;
+            color: #f1f5f9;
+            margin-bottom: 24px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .love-letter p {
+            margin-bottom: 14px;
+        }
+        .love-letter p:last-child {
+            margin-bottom: 0;
+        }
+        .love-letter .first-line {
+            color: #ff8fa3;
+            font-weight: 700;
+            font-size: 1.15rem;
+            text-shadow: 0 0 12px rgba(255, 71, 126, 0.4);
+        }
+        .love-letter .ps-line {
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px dashed rgba(0, 240, 255, 0.3);
+            color: #00f0ff;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+        }
+
+        /* Терминал с командами для подарка */
+        .terminal-box {
+            background: #05060a;
+            border: 1px solid rgba(0, 255, 65, 0.45);
+            border-radius: 10px;
+            padding: 18px 24px;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.12);
+            font-size: 1.1rem;
+            line-height: 1.85;
+            color: #00ff41;
+            position: relative;
+        }
+        .terminal-title {
+            font-size: 0.72rem;
+            color: #64748b;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
         .prompt {
-            color: #555;
+            color: #ff477e;
             user-select: none;
+            font-weight: bold;
+        }
+
+        /* Нижняя панель с бегающим туда-сюда пингвином Туксом */
+        .tux-runway {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 76px;
+            background: linear-gradient(to top, rgba(6, 6, 12, 0.96), rgba(6, 6, 12, 0.4), transparent);
+            border-bottom: 3px solid #00f0ff;
+            z-index: 20;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .tux-runner {
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            width: 60px;
+            height: 60px;
+            animation: patrolX 11s linear infinite;
+        }
+        .tux-sprite {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75));
+            animation: waddleHop 0.32s ease-in-out infinite alternate;
+        }
+
+        /* Движение пингвина от левого края к правому и обратно с разворотом */
+        @keyframes patrolX {
+            0% {
+                left: 2%;
+                transform: scaleX(1);
+            }
+            48% {
+                left: calc(98% - 60px);
+                transform: scaleX(1);
+            }
+            50% {
+                left: calc(98% - 60px);
+                transform: scaleX(-1);
+            }
+            98% {
+                left: 2%;
+                transform: scaleX(-1);
+            }
+            100% {
+                left: 2%;
+                transform: scaleX(1);
+            }
+        }
+
+        /* Веселое подпрыгивание при беге */
+        @keyframes waddleHop {
+            0% { transform: translateY(0) rotate(-6deg); }
+            100% { transform: translateY(-9px) rotate(6deg); }
+        }
+
+        @media (max-width: 600px) {
+            .cyber-card { padding: 26px 20px; }
+            .glitch-title { font-size: 1.3rem; }
+            .love-letter { padding: 18px; font-size: 0.95rem; }
+            .terminal-box { font-size: 0.95rem; padding: 14px 16px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="terminal">
-        <div><span class="prompt">$ </span>wget ~/gift/present.zip</div>
-        <div><span class="prompt">$ </span>cd /home/backpack</div>
-        <div><span class="prompt">$ </span>./run.sh --reuse-key</div>
+    <!-- Бегущие киберпанк-ленты на заднем фоне -->
+    <div class="ticker-background" id="tickerBg"></div>
+
+    <!-- Главная карточка с поздравлением и командами -->
+    <div class="cyber-card">
+        <span class="corner c-tl"></span>
+        <span class="corner c-tr"></span>
+        <span class="corner c-bl"></span>
+        <span class="corner c-br"></span>
+
+        <div class="card-header">
+            <div class="status-badge">
+                <span class="pulse-dot"></span>
+                <span>ALL 7 STAGES CLEARED // KEY: 143</span>
+            </div>
+            <span>DECRYPTED_GIFT_FILE.SH</span>
+        </div>
+
+        <h1 class="glitch-title" data-text="ACCESS GRANTED // HAPPY BIRTHDAY">ACCESS GRANTED // HAPPY BIRTHDAY</h1>
+
+        <div class="love-letter">
+            <p class="first-line">С днём рождения, мой любименький мальчик!</p>
+            <p>Я безумно сильно ждала этого дня, чтобы наконец-то поделиться этим небольшим проектиком с тобой. Я чувствовала себя ребенком, который учится ходить. Но я была готова пройти и не через такое, чтобы порадовать тебя в этот замечательный день</p>
+            <p>Я безумно сильно люблю тебя, солнышко. Ты даришь мне столько позитива, любви, заботы и внимания, что я чувствую себя принцессой. Ты самый близкий и родной для меня человек. Что бы мы не обсуждали, как бы наши взгляды не отличались, я всегда буду выбирать тебя, всегда буду рядом и никогда не оставлю моего котика</p>
+            <p>Я хочу пожелать тебе того, что ты хочешь сам. Пусть любая идея, мечта или цель становится реальностью. Пусть твои навыки помогают людям. Пусть твоё призвание будет радовать тебя и приносить только положительные эмоции. Я всегда буду поддерживать тебя в любых начинаниях и помогать в любые времена</p>
+            <p>Никогда не опускай руки и не сдавайся. Ты самый сильный и дисциплинированный человек, которого я знаю. Я уверена, что в будущем ты станешь великим человеком и сможешь достичь очень многого</p>
+            <p>Спасибо тебе за самый счастливый год в моей жизни. Я уверена, что это только начало, и вместе мы отпразднуем еще 100 таких дней рождения)</p>
+            <p>Я всегда буду любить тебя больше всего на свете, мой милый котик</p>
+            <p class="ps-line">P.S. вводи тот же код и открывай подарки)</p>
+        </div>
+
+        <div class="terminal-box">
+            <div class="terminal-title">// ROOT TERMINAL — GIFT EXECUTION COMMANDS:</div>
+            <div><span class="prompt">$ </span>wget ~/gift/present.zip</div>
+            <div><span class="prompt">$ </span>cd /home/backpack</div>
+            <div><span class="prompt">$ </span>./run.sh --reuse-key</div>
+        </div>
     </div>
+
+    <!-- Нижняя панель с бегающим туда-сюда пингвином Туксом -->
+    <div class="tux-runway">
+        <div class="tux-runner">
+            <img src="tux_anon.png" alt="Tux" class="tux-sprite">
+        </div>
+    </div>
+
+    <script>
+        const bgTags = [
+            "<b>[SYS_143]</b> BIRTHDAY_PROTOCOL_ACTIVE",
+            "<i>[ROOT_ACCESS]</i> С ДНЁМ РОЖДЕНИЯ, ЛЮБИМЫЙ",
+            "<b>[HEART_CORE]</b> 100_YEARS_TOGETHER_GRANTED",
+            "<i>[SECURITY_OVERRIDE]</i> LOVE_LEVEL: INFINITE",
+            "<b>[GIFT_READY]</b> ./run.sh --reuse-key",
+            "<i>[VERIFIED]</i> ТЫ САМЫЙ СИЛЬНЫЙ И РОДНОЙ"
+        ];
+
+        const tickerBg = document.getElementById('tickerBg');
+        for (let r = 0; r < 6; r++) {
+            const row = document.createElement('div');
+            row.className = 'ticker-row';
+            const track = document.createElement('div');
+            track.className = `ticker-track ${r % 2 === 0 ? 'scroll-left' : 'scroll-right'}`;
+
+            let html = '';
+            for (let repeat = 0; repeat < 4; repeat++) {
+                for (let i = 0; i < bgTags.length; i++) {
+                    const idx = (i + r) % bgTags.length;
+                    html += `<span class="bg-item">${bgTags[idx]} &nbsp;&#9670;&nbsp;</span>`;
+                }
+            }
+            track.innerHTML = html;
+            row.appendChild(track);
+            tickerBg.appendChild(row);
+        }
+    </script>
 
 </body>
 </html>
