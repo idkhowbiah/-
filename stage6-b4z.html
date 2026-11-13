@@ -2,99 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stage 6 — System Login</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
-            background-color: #000000;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
+            /* Тёмный сине-бирюзовый фон */
+            background: radial-gradient(circle at center, #0e3846 0%, #071f29 65%, #031016 100%);
+            font-family: Tahoma, Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Верхняя панель браузера с адресной строкой */
+        .browser-bar {
+            background: #181a1f;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid #2b2f38;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            user-select: none;
+        }
+        .window-dots {
+            display: flex;
+            gap: 7px;
+        }
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .dot.r { background: #ff5f56; }
+        .dot.y { background: #ffbd2e; }
+        .dot.g { background: #27c93f; }
+
+        .nav-btns {
+            color: #6c7380;
+            font-size: 1rem;
+            display: flex;
+            gap: 10px;
+        }
+        .address-box {
+            flex: 1;
+            background: #0d0f12;
+            border: 1px solid #323742;
+            border-radius: 6px;
+            padding: 7px 14px;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lock-icon {
+            color: #27c93f;
+            font-size: 0.85rem;
+        }
+        .url-domain {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Центральная область страницы */
+        .main-area {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
+
+        /* Классическая старая белая панель входа */
         .login-box {
-            border: 1px solid #00ff00;
-            padding: 30px;
-            width: 380px;
-            background-color: #050505;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.15);
+            background-color: #ffffff;
+            border: 1px solid #8c9ba5;
+            border-radius: 3px;
+            width: 340px;
+            padding: 24px 26px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
+            color: #222222;
         }
-        h3 {
-            margin-top: 0;
-            text-align: center;
-            letter-spacing: 1px;
+        .login-box h3 {
+            font-size: 1.05rem;
+            color: #1a3b47;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dcdcdc;
+            font-weight: bold;
         }
-        input {
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #333333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0 16px 0;
-            background: #000;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            font-family: inherit;
-            box-sizing: border-box;
+            padding: 7px 9px;
+            background: #ffffff;
+            border: 1px solid #7f9db9; /* Классическая рамка старых форм Windows/Web */
+            box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
+            color: #000000;
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 0.9rem;
+            outline: none;
         }
-        button {
+        .form-group input:focus {
+            border-color: #165670;
+            background: #fafdff;
+        }
+        .submit-btn {
             width: 100%;
-            padding: 10px;
-            background: #00ff00;
-            color: #00;
-            border: none;
-            font-family: inherit;
+            margin-top: 6px;
+            padding: 8px 12px;
+            background: linear-gradient(to bottom, #f2f2f2 0%, #d8d8d8 100%);
+            border: 1px solid #707070;
+            border-radius: 2px;
+            color: #111111;
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 0.85rem;
             font-weight: bold;
             cursor: pointer;
         }
-        button:hover {
-            background: #00cc00;
+        .submit-btn:hover {
+            background: linear-gradient(to bottom, #e6f1f7 0%, #c4dfee 100%);
+            border-color: #3c7fb1;
         }
-        .debug {
-            margin-top: 20px;
-            font-size: 0.75rem;
-            color: #666;
-            word-break: break-all;
-            border-top: 1px dashed #333;
-            padding-top: 10px;
+        .submit-btn:active {
+            background: #c4dfee;
         }
         .error {
-            color: #ff3333;
-            font-size: 0.85rem;
+            color: #c92a2a;
+            font-size: 0.8rem;
             margin-top: 12px;
             text-align: center;
-            min-height: 1.2em;
+            min-height: 1.1em;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-box">
-        <h3>RESTRICTED AREA</h3>
-        <form id="sqlForm">
-            <label>USERNAME:</label>
-            <input type="text" id="username" placeholder="admin" autocomplete="off">
-            <label>PASSWORD:</label>
-            <input type="text" id="password" placeholder="••••••••" autocomplete="off">
-            <button type="submit">AUTHENTICATE</button>
-        </form>
-        <div id="errorMsg" class="error"></div>
-        <div class="debug" id="queryPreview">
-            SQL Debug: SELECT * FROM users WHERE user='' AND pass=''
+    <!-- Адресная строка с https://tryrevenge.ru/ -->
+    <div class="browser-bar">
+        <div class="window-dots">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+        </div>
+        <div class="nav-btns">
+            <span>&#8592;</span>
+            <span>&#8594;</span>
+            <span>&#8635;</span>
+        </div>
+        <div class="address-box">
+            <span class="lock-icon">&#128274;</span>
+            <span class="url-domain">https://tryrevenge.ru/</span>
+        </div>
+    </div>
+
+    <!-- Сине-бирюзовый экран со старой белой панелью по центру -->
+    <div class="main-area">
+        <div class="login-box">
+            <h3>Authorization Required</h3>
+            <form id="sqlForm">
+                <div class="form-group">
+                    <label>Login:</label>
+                    <input type="text" id="username" placeholder="stitchero" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="text" id="password" placeholder="••••••••" autocomplete="off">
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+            <div id="errorMsg" class="error"></div>
         </div>
     </div>
 
     <script>
         const userInp = document.getElementById('username');
         const passInp = document.getElementById('password');
-        const preview = document.getElementById('queryPreview');
         const errorMsg = document.getElementById('errorMsg');
-
-        function updatePreview() {
-            preview.textContent = `SQL Debug: SELECT * FROM users WHERE user='${userInp.value}' AND pass='${passInp.value}'`;
-        }
-
-        userInp.addEventListener('input', updatePreview);
-        passInp.addEventListener('input', updatePreview);
 
         document.getElementById('sqlForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -108,12 +209,14 @@
                 normalized.includes("\"or1=1") ||
                 normalized.includes("or'a'='a") ||
                 normalized.includes("admin'--") ||
-                normalized.includes("admin'#");
+                normalized.includes("admin'#") ||
+                normalized.includes("stitchero'--") ||
+                normalized.includes("stitchero'#");
 
             if (isSqlInjection) {
                 window.location.href = atob("Li9zdGFnZTYtc2VjcmV0LTk5YS5odG1s");
             } else {
-                errorMsg.textContent = "ACCESS DENIED: Invalid credentials.";
+                errorMsg.textContent = "Invalid login or password.";
             }
         });
     </script>
